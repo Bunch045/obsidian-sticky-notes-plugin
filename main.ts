@@ -1,12 +1,11 @@
 import { LoggingService } from "core/services/LogginService";
-import { StickyNoteManager } from "core/views/StickyNoteManager";
+import { StickyNoteLeaf } from "core/views/StickyNoteLeaf";
 import {
 	Menu,
 	Plugin,
 	setTooltip,
 	TFile,
 	WorkspaceLeaf,
-	WorkspaceWindow,
 } from "obsidian";
 
 //--------- I have two options:
@@ -15,8 +14,6 @@ import {
 
 export default class StickyNotesPlugin extends Plugin {
 
-	leafList = new Set<WorkspaceLeaf>();
-
 	async onload() {
 		LoggingService.enable();
 		LoggingService.info("plugin loading....");
@@ -24,7 +21,6 @@ export default class StickyNotesPlugin extends Plugin {
 		this.addStickyNoteRibbonAction();
 		this.addStickNoteCommand();
 		this.addStickyNoteMenuOptions();
-		this.addPopoutClosedListner();
 		this.addLeafChangeListner();
 	}
 
@@ -34,7 +30,7 @@ export default class StickyNotesPlugin extends Plugin {
 	}
 
 	private destroyAllStickyNotes() {
-		this.leafList.forEach(l => l.detach())
+		StickyNoteLeaf.leafsList.forEach(l => l.leaf.detach())
 	}
 
 	private addStickNoteCommand() {
@@ -78,20 +74,23 @@ export default class StickyNotesPlugin extends Plugin {
 		});
 	}
 
-	private addPopoutClosedListner() {
-		const closeEvent = this.app.workspace.on('window-close', (win: WorkspaceWindow, window: Window) => {
-			const noteId = win.doc.documentElement.getAttribute('note-id');
-			if (noteId) {
-				StickyNoteManager.removeBrowserWindow(noteId);
-			}
-		});
-		this.registerEvent(closeEvent);
-	}
+	// private addPopoutClosedListner() {
+	// 	const closeEvent = this.app.workspace.on('window-close', (win: WorkspaceWindow, window: Window) => {
+	// 		const noteId = win.doc.documentElement.getAttribute('note-id');
+	// 		if (noteId) {
+	// 			StickyNoteManager.removeBrowserWindow(noteId);
+	// 		}
+	// 	});
+	// 	this.registerEvent(closeEvent);
+	// }
 
 	private addLeafChangeListner() {
 		const leafChangeEvent = this.app.workspace.on('active-leaf-change', (leaf: WorkspaceLeaf | null) => {
 			const noteId = leaf?.getContainer().win.activeDocument.documentElement.getAttribute('note-id');
-			if (noteId && leaf) StickyNoteManager.initView(leaf, noteId);
+			StickyNoteLeaf.leafsList.forEach(l => {
+				console.log('--- l', l.title,'==' ,noteId)
+				if (l.title === noteId) l.initView()
+			})
 		})
 		this.registerEvent(leafChangeEvent);
 	}
@@ -105,8 +104,7 @@ export default class StickyNotesPlugin extends Plugin {
 				width: 300,
 			},
 		});
-		StickyNoteManager.initStickyNote(popoutLeaf);
-		if (file) await popoutLeaf.openFile(file); 
-		this.leafList.add(popoutLeaf);
+		const stickNoteLeaf = new StickyNoteLeaf(popoutLeaf);
+		await stickNoteLeaf.initStickyNote(file);
 	}
 }
