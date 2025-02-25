@@ -15,6 +15,8 @@ export class StickyNoteLeaf {
 	private static stickyNoteId = 0;
 	public static leafsList = new Set<StickyNoteLeaf>();
 
+    DEFAULT_DIMENSION = 300;
+    DEFAUL_COLOR = '250, 240, 208';
 
 	id: number;
 	leaf: WorkspaceLeaf;
@@ -41,8 +43,8 @@ export class StickyNoteLeaf {
 		this.document.title = this.title;
 		this.document.documentElement.setAttribute("note-id", this.title);
 		this.buildColorMenu();
-		this.initMainWindow();
 		this.initView();
+		this.initMainWindow();
         if (file) await this.leaf.openFile(file);
 	}
 
@@ -52,7 +54,6 @@ export class StickyNoteLeaf {
 		this.removeDefaultActionsMenu();
 		this.removeHeader();
 		this.addStickyNoteActions();
-		this.pinAction(true);
 	}
 
 	private initMainWindow() {
@@ -65,8 +66,9 @@ export class StickyNoteLeaf {
 			return;
 		}
 		this.mainWindow = mainWindow;
-		this.mainWindow.setSize(300, 300);
+		this.mainWindow.setSize(this.DEFAULT_DIMENSION, this.DEFAULT_DIMENSION);
 		this.mainWindow.setResizable(false);
+        this.pinAction(true);
 	}
 
 	private removeDefaultActionsMenu() {
@@ -100,7 +102,7 @@ export class StickyNoteLeaf {
 			this.mainWindow?.minimize()
 		);
 		this.view
-			.addAction("pin", "Pin", () => this.pinAction())
+			.addAction(this.mainWindow?.isAlwaysOnTop() ? "pin-off" : "pin", "Pin", () => this.pinAction())
 			.addClass("pinButton");
 		this.view.addAction("palette", "Color", (event) =>
 			this.colorMenu.showAtMouseEvent(event)
@@ -152,7 +154,7 @@ export class StickyNoteLeaf {
 
 		this.document.body.style.setProperty(
 			"--background-primary",
-			`rgba(250, 240, 208)`
+			`rgb(${this.DEFAUL_COLOR})`
 		);
 	}
 }

@@ -8,10 +8,6 @@ import {
 	WorkspaceLeaf,
 } from "obsidian";
 
-//--------- I have two options:
-//-> only open sticky note views for editor views (that means the user can't open a sticky ntoe for a graph view for example)
-//-> allow the user to open anything as a sticky note window <--- this is better. //no need for a custom view
-
 export default class StickyNotesPlugin extends Plugin {
 
 	async onload() {
@@ -35,9 +31,15 @@ export default class StickyNotesPlugin extends Plugin {
 	private addStickNoteCommand() {
 		this.addCommand({
 			id: "open-sticky-note-view",
-			name: "Open Sticky Note Window",
+			name: "Open sticky note window",
 			icon: "sticky-note",
 			callback: () => this.openStickyNotePopup(),
+		});
+		this.addCommand({
+			id: "destroy-sticky-note-views",
+			name: "Destroy all sticky notes",
+			icon: "copy-x",
+			callback: () => this.destroyAllStickyNotes(),
 		});
 	}
 
