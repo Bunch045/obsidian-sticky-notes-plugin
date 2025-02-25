@@ -21,9 +21,11 @@ You can open this popout window using the ribbon action, command, or context men
 
 - The plugin relies on customizing certain obsidian elements (like the titlebar) and relies on their classes, there is _**no guarentee that this will continue working in future releases of obsidian**_ (if they ever decided to rename their classes for example).
 
+## Version Workflow
 
-
-
-
-
-
+**Creating a Release**
+- Push Code.
+- Create Tag:
+    - `git tag -a 1.0.1 -m "1.0.1`
+    - `git push origin 1.0.1`
+- Edit Release Notes on Github.

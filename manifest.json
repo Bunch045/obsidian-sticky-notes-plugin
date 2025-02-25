@@ -1,7 +1,6 @@
 {
 	"id": "obsidian-sticky-notes-plugin",
 	"name": "Sticky Notes Plugin",
-	"version": "0.5.0",
 	"minAppVersion": "0.15.0",
 	"description": "Allows for writing sticky notes and pinning them.",
 	"author": "NoPoint",
