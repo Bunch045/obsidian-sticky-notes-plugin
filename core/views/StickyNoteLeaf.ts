@@ -16,7 +16,7 @@ export class StickyNoteLeaf {
 	public static leafsList = new Set<StickyNoteLeaf>();
 
     DEFAULT_DIMENSION = 300;
-    DEFAUL_COLOR = '250, 240, 208';
+    DEFAUL_COLOR = '--sticky-note-yellow';
 
 	id: number;
 	leaf: WorkspaceLeaf;
@@ -97,16 +97,16 @@ export class StickyNoteLeaf {
 			"app-region": "drag",
 			"-webkit-app-region": "drag",
 		});
-		this.view.addAction("x", "Close", () => this.leaf.detach());
+		this.view.addAction("x", "Close", () => this.leaf.detach()).addClass('sticky-note-button');
 		this.view.addAction("minus", "Minimize", () =>
 			this.mainWindow?.minimize()
-		);
+		).addClass('sticky-note-button');
 		this.view
 			.addAction(this.mainWindow?.isAlwaysOnTop() ? "pin-off" : "pin", "Pin", () => this.pinAction())
-			.addClass("pinButton");
+			.addClasses(["pinButton", "sticky-note-button"]);
 		this.view.addAction("palette", "Color", (event) =>
 			this.colorMenu.showAtMouseEvent(event)
-		);
+		).addClass('sticky-note-button');
 	}
 
 	private pinAction(pin?: boolean) {
@@ -146,7 +146,7 @@ export class StickyNoteLeaf {
 					.onClick(() =>
 						this.document.body.style.setProperty(
 							"--background-primary",
-							`rgb(${color.color})`
+							`rgb(var(${color.color}))`
 						)
 					)
 			);
@@ -154,7 +154,7 @@ export class StickyNoteLeaf {
 
 		this.document.body.style.setProperty(
 			"--background-primary",
-			`rgb(${this.DEFAUL_COLOR})`
+			`rgb(var(${this.DEFAUL_COLOR}))`
 		);
 	}
 }

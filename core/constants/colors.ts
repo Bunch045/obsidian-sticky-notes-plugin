@@ -1,34 +1,34 @@
 export const COLORS = [
 	{
-		color: "250, 218, 223",
+		color: "--sticky-note-red",
 		label: "Red",
 	},
 	{
-		color: "250, 231, 208", 
+		color: "--sticky-note-orange",
 		label: "Orange",
 	},
 	{
-		color: "250, 240, 208", 
+		color: "--sticky-note-yellow",
 		label: "Yellow",
 	},
 	{
-		color: "208, 240, 223",
+		color: "--sticky-note-green",
 		label: "Green",
 	},
 	{
-		color: "208, 240, 240",
+		color: "--sticky-note-cyan",
 		label: "Cyan",
 	},
 	{
-		color: "208, 227, 250",
+		color: "--sticky-note-blue",
 		label: "Blue",
 	},
 	{
-		color: "231, 223, 250",
+		color: "--sticky-note-purple",
 		label: "Purple",
 	},
 	{
-		color: "245, 218, 231",
+		color: "--sticky-note-pink",
 		label: "Pink",
 	},
 ];

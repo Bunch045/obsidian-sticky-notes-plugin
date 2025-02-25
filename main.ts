@@ -11,7 +11,7 @@ import {
 export default class StickyNotesPlugin extends Plugin {
 
 	async onload() {
-		LoggingService.enable();
+		LoggingService.disable();
 		LoggingService.info("plugin loading....");
 
 		this.addStickyNoteRibbonAction();
