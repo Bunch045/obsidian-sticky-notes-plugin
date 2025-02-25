@@ -1,5 +1,5 @@
-// export interface IPluginSettings {
-// }
+export interface IPluginSettings {
+}
 
-// export const DEFAULT_SETTINGS: IPluginSettings = {
-// }
+export const DEFAULT_SETTINGS: IPluginSettings = {
+}

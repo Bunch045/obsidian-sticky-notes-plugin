@@ -1,19 +1,19 @@
-// import { DEFAULT_SETTINGS, IPluginSettings } from "core/interfaces/PluginSettingsInterface";
-// import type { Plugin } from "obsidian";
+import { DEFAULT_SETTINGS, IPluginSettings } from "core/interfaces/PluginSettingsInterface";
+import type { Plugin } from "obsidian";
 
-// export class SettingService {
-//     plugin: Plugin;
-// 	settings: IPluginSettings;
+export class SettingService {
+    plugin: Plugin;
+	settings: IPluginSettings;
 
-//     constructor(plugin: Plugin) {
-//         this.plugin = plugin;
-//     }
+    constructor(plugin: Plugin) {
+        this.plugin = plugin;
+    }
     
-// 	async loadSettings() {
-// 		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.plugin.loadData());
-// 	}
+	async loadSettings() {
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.plugin.loadData());
+	}
 
-// 	async saveSettings() {
-// 		await this.plugin.saveData(this.settings);
-// 	}
-// }
+	async saveSettings() {
+		await this.plugin.saveData(this.settings);
+	}
+}
