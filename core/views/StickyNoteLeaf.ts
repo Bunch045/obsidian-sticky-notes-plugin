@@ -95,7 +95,6 @@ export class StickyNoteLeaf {
 			"app-region": "drag",
 			"-webkit-app-region": "drag",
 		});
-        console.log('-- blah?')
 		this.view.addAction("x", "Close", () => this.leaf.detach());
 		this.view.addAction("minus", "Minimize", () =>
 			this.mainWindow?.minimize()
@@ -145,7 +144,7 @@ export class StickyNoteLeaf {
 					.onClick(() =>
 						this.document.body.style.setProperty(
 							"--background-primary",
-							`rgba(var(${color.color}), 0.04)`
+							`rgb(${color.color})`
 						)
 					)
 			);
@@ -153,7 +152,7 @@ export class StickyNoteLeaf {
 
 		this.document.body.style.setProperty(
 			"--background-primary",
-			`rgba(var(--color-yellow-rgb), 0.04)`
+			`rgba(250, 240, 208)`
 		);
 	}
 }

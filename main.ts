@@ -26,7 +26,6 @@ export default class StickyNotesPlugin extends Plugin {
 
 	onunload() {
 		LoggingService.info("plugin UN-loading ....");
-		this.destroyAllStickyNotes();
 	}
 
 	private destroyAllStickyNotes() {
@@ -88,7 +87,6 @@ export default class StickyNotesPlugin extends Plugin {
 		const leafChangeEvent = this.app.workspace.on('active-leaf-change', (leaf: WorkspaceLeaf | null) => {
 			const noteId = leaf?.getContainer().win.activeDocument.documentElement.getAttribute('note-id');
 			StickyNoteLeaf.leafsList.forEach(l => {
-				console.log('--- l', l.title,'==' ,noteId)
 				if (l.title === noteId) l.initView()
 			})
 		})
