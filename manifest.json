@@ -1,9 +1,9 @@
 {
-	"id": "obsidian-sticky-notes-plugin",
-	"name": "Sticky Notes Plugin",
-	"version": "0.7.3",
+	"id": "sticky-notes",
+	"name": "Sticky Notes",
+	"version": "0.7.4",
 	"minAppVersion": "0.15.0",
-	"description": "Allows for writing sticky notes and pinning them.",
+	"description": "Create sticky notes popups.",
 	"author": "NoPoint",
 	"authorUrl": "https://github.com/Abdo-reda",
 	"fundingUrl": "https://github.com/Abdo-reda",
