@@ -25,7 +25,8 @@ You can open this popout window using the ribbon action, command, or context men
 
 **Creating a Release**
 - Push Code.
+- Bump Vesrion `node version-bump.mjs <version>`
 - Create Tag:
-    - `git tag -a 1.0.1 -m "1.0.1`
-    - `git push origin 1.0.1`
+    - `git tag -a <version> -m "<version>`
+    - `git push origin <version>`
 - Edit Release Notes on Github.

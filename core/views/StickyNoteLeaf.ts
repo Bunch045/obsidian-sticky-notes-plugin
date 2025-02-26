@@ -15,8 +15,8 @@ export class StickyNoteLeaf {
 	private static stickyNoteId = 0;
 	public static leafsList = new Set<StickyNoteLeaf>();
 
-    DEFAULT_DIMENSION = 300;
-    DEFAUL_COLOR = '--sticky-note-yellow';
+	DEFAULT_DIMENSION = 300;
+	DEFAUL_COLOR = "--sticky-note-yellow";
 
 	id: number;
 	leaf: WorkspaceLeaf;
@@ -31,26 +31,26 @@ export class StickyNoteLeaf {
 		this.document = this.leaf.getContainer().win.activeDocument;
 		this.id = StickyNoteLeaf.stickyNoteId;
 		StickyNoteLeaf.stickyNoteId++;
-        StickyNoteLeaf.leafsList.add(this);
+		StickyNoteLeaf.leafsList.add(this);
 	}
 
 	get title() {
 		return `sticky-note-${this.id}`;
 	}
 
-	async initStickyNote(file: TFile|null = null) {
+	async initStickyNote(file: TFile | null = null) {
 		LoggingService.info(`Init Sticky Note ${this.id} ...`);
 		this.document.title = this.title;
 		this.document.documentElement.setAttribute("note-id", this.title);
 		this.buildColorMenu();
 		this.initView();
 		this.initMainWindow();
-        if (file) await this.leaf.openFile(file);
+		if (file) await this.leaf.openFile(file);
 	}
 
 	initView() {
-        LoggingService.info("Updaing Sticky Note view")
-        this.view = this.leaf.view;
+		LoggingService.info("Updaing Sticky Note view");
+		this.view = this.leaf.view;
 		this.removeDefaultActionsMenu();
 		this.removeHeader();
 		this.addStickyNoteActions();
@@ -68,7 +68,7 @@ export class StickyNoteLeaf {
 		this.mainWindow = mainWindow;
 		this.mainWindow.setSize(this.DEFAULT_DIMENSION, this.DEFAULT_DIMENSION);
 		this.mainWindow.setResizable(false);
-        this.pinAction(true);
+		this.pinAction(true);
 	}
 
 	private removeDefaultActionsMenu() {
@@ -97,16 +97,24 @@ export class StickyNoteLeaf {
 			"app-region": "drag",
 			"-webkit-app-region": "drag",
 		});
-		this.view.addAction("x", "Close", () => this.leaf.detach()).addClass('sticky-note-button');
-		this.view.addAction("minus", "Minimize", () =>
-			this.mainWindow?.minimize()
-		).addClass('sticky-note-button');
 		this.view
-			.addAction(this.mainWindow?.isAlwaysOnTop() ? "pin-off" : "pin", "Pin", () => this.pinAction())
+			.addAction("x", "Close", () => this.leaf.detach())
+			.addClass("sticky-note-button");
+		this.view
+			.addAction("minus", "Minimize", () => this.mainWindow?.minimize())
+			.addClass("sticky-note-button");
+		this.view
+			.addAction(
+				this.mainWindow?.isAlwaysOnTop() ? "pin-off" : "pin",
+				"Pin",
+				() => this.pinAction()
+			)
 			.addClasses(["pinButton", "sticky-note-button"]);
-		this.view.addAction("palette", "Color", (event) =>
-			this.colorMenu.showAtMouseEvent(event)
-		).addClass('sticky-note-button');
+		this.view
+			.addAction("palette", "Color", (event) =>
+				this.colorMenu.showAtMouseEvent(event)
+			)
+			.addClass("sticky-note-button");
 	}
 
 	private pinAction(pin?: boolean) {
@@ -124,37 +132,30 @@ export class StickyNoteLeaf {
 	private buildColorMenu() {
 		this.colorMenu = new Menu();
 
-		const defaultColor = this.document.body.style.getPropertyValue(
+		const defaultColor = this.document.body.getCssPropertyValue(
 			"--background-primary"
 		);
 
 		this.colorMenu.addItem((item) =>
-			item
-				.setTitle("DEFAULT")
-				.onClick(() =>
-					this.document.body.style.setProperty(
-						"--background-primary",
-						defaultColor
-					)
-				)
+			item.setTitle("DEFAULT").onClick(() =>
+				this.document.body.setCssProps({
+					"--background-primary": defaultColor,
+				})
+			)
 		);
 
 		for (const color of COLORS) {
 			this.colorMenu.addItem((item) =>
-				item
-					.setTitle(color.label)
-					.onClick(() =>
-						this.document.body.style.setProperty(
-							"--background-primary",
-							`rgb(var(${color.color}))`
-						)
-					)
+				item.setTitle(color.label).onClick(() =>
+					this.document.body.setCssProps({
+						"--background-primary": `rgb(var(${color.color}))`,
+					})
+				)
 			);
 		}
 
-		this.document.body.style.setProperty(
-			"--background-primary",
-			`rgb(var(${this.DEFAUL_COLOR}))`
-		);
+		this.document.body.setCssProps({
+			"--background-primary": `rgb(var(${this.DEFAUL_COLOR}))`,
+		})
 	}
 }
