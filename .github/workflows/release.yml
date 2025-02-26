@@ -24,11 +24,15 @@ jobs:
           npm install
           npm run build
 
+      - name: Get Latest Tag
+        uses: actions-ecosystem/action-get-latest-tag@v1.6.0
+        id: get-latest-tag
+
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          tag="${GITHUB_REF#refs/tags/}"
+          tag="${{ steps.get-latest-tag.outputs.tag }}"
 
           mkdir -p sticky-notes-plugin
           cp main.js manifest.json styles.css sticky-notes-plugin/
