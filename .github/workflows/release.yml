@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - "*"
+  manual:
 
 jobs:
   build:
@@ -29,7 +30,17 @@ jobs:
         run: |
           tag="${GITHUB_REF#refs/tags/}"
 
+          mkdir -p sticky-notes-plugin
+          cp main.js manifest.json styles.css sticky-notes-plugin/
+
+          zip -r sticky-notes-plugin.zip sticky-notes-plugin
+          tar -czvf sticky-notes-plugin.tar.gz sticky-notes-plugin
+
           gh release create "$tag" \
             --title="$tag" \
             --draft \
-            main.js manifest.json styles.css
+            sticky-notes-plugin.zip \
+            sticky-notes-plugin.tar.gz \
+            main.js \
+            manifest.json \
+            styles.css

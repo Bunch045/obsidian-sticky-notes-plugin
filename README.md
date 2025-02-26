@@ -21,6 +21,13 @@ You can open this popout window using the ribbon action, command, or context men
 
 - The plugin relies on customizing certain obsidian elements (like the titlebar) and relies on their classes, there is _**no guarentee that this will continue working in future releases of obsidian**_ (if they ever decided to rename their classes for example).
 
+## Installation
+
+- Go to [latest release](https://github.com/Abdo-reda/obsidian-sticky-notes-plugin/releases/latest).
+- Download the `sticky-notes.zip` file and extract it inside of your obsidian vault plugins folder `<vault>\.obsidian\plugins`.
+
+> [WARNING] make sure to copy and backup your obsidian notes. This is a just a precaution.
+
 ## Version Workflow
 
 **Creating a Release**
