@@ -25,6 +25,7 @@ You can open this popout window using the ribbon action, command, or context men
 
 - Go to [latest release](https://github.com/Abdo-reda/obsidian-sticky-notes-plugin/releases/latest).
 - Download the `sticky-notes.zip` file and extract it inside of your obsidian vault plugins folder `<vault>\.obsidian\plugins`.
+- Reload obsidian and make sure to enable the plugin in the `community plugins` section in vault settings.
 
 > [WARNING] make sure to copy and backup your obsidian notes. This is a just a precaution.
 
