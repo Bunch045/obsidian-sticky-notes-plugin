@@ -1,4 +1,4 @@
-# Obsidian Sticky Note Plugin
+# Sticky Note Plugin
 
 This is a simple plugin that essentially builds on the popout functionality of obsidian. **_It adds a new popout window that resembles sticky notes_** that haves a much simpler look and adds a pin functionality. 
 
@@ -10,7 +10,7 @@ You can open this popout window using the ribbon action, command, or context men
 
 ## Possible Issues & Limitations.
 
-- Windows (sticky note windows) don't close themselves when obsidian shutsdown, and unfortunely reopen as normal popups when obsidian restarts. (hopefully can be fixed in the future.)
+- Windows (sticky note windows) don't close themselves when obsidian shutsdown, and unfortunely reopen as normal popups when obsidian restarts. (hopefully can be fixed in a future release.)
 
 - Currently there is no Settings (might change in the future), Default values:
     - **Sticky Note default color:** `Yellow color (250, 240, 208)`
@@ -32,8 +32,8 @@ You can open this popout window using the ribbon action, command, or context men
 ## Version Workflow
 
 **Creating a Release**
-- Push Code.
 - Bump Vesrion `node version-bump.mjs <version>`
+- Push Code.
 - Create Tag:
     - `git tag -a <version> -m "<version>`
     - `git push origin <version>`

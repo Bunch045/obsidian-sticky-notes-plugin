@@ -46,11 +46,11 @@ export default class StickyNotesPlugin extends Plugin {
 	private addStickyNoteRibbonAction() {
 		const stickyNoteRibbon = this.addRibbonIcon(
 			"sticky-note",
-			"Open Sticky Note",
+			"Open sticky note",
 			() => this.openStickyNotePopup()
 		);
 
-		setTooltip(stickyNoteRibbon, "StickyNote Popup");
+		setTooltip(stickyNoteRibbon, "Sticky note popup");
 	}
 
 	private addStickyNoteMenuOptions() {
@@ -69,7 +69,7 @@ export default class StickyNotesPlugin extends Plugin {
 
 	private addStickyNoteMenuItem(menu: Menu, file: TFile | null) {
 		menu.addItem((item) => {
-			item.setTitle("Open Sticky Note")
+			item.setTitle("Open sticky note")
 				.setIcon("sticky-note")
 				.onClick(() => this.openStickyNotePopup(file));
 		});
