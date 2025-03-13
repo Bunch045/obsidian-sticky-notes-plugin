@@ -1,5 +1,6 @@
 import { BrowserWindow } from "@electron/remote";
-import { COLORS } from "core/constants/colors";
+import { Colors, getColorCSS } from "core/constants/colors";
+import { ColorMenu } from "core/menus/colorMenu";
 import { LoggingService } from "core/services/LogginService";
 import {
 	ItemView,
@@ -16,7 +17,7 @@ export class StickyNoteLeaf {
 	public static leafsList = new Set<StickyNoteLeaf>();
 
 	DEFAULT_DIMENSION = 300;
-	DEFAUL_COLOR = "--sticky-note-yellow";
+	DEFAULT_COLOR = Colors.YELLOW;
 
 	id: number;
 	leaf: WorkspaceLeaf;
@@ -42,7 +43,7 @@ export class StickyNoteLeaf {
 		LoggingService.info(`Init Sticky Note ${this.id} ...`);
 		this.document.title = this.title;
 		this.document.documentElement.setAttribute("note-id", this.title);
-		this.buildColorMenu();
+		this.initColorMenu();
 		this.initView();
 		this.initMainWindow();
 		if (file) await this.leaf.openFile(file);
@@ -129,33 +130,14 @@ export class StickyNoteLeaf {
 		setTooltip(pinButton, isPinned ? "UnPin" : "Pin");
 	}
 
-	private buildColorMenu() {
-		this.colorMenu = new Menu();
-
-		const defaultColor = this.document.body.getCssPropertyValue(
-			"--background-primary"
-		);
-
-		this.colorMenu.addItem((item) =>
-			item.setTitle("DEFAULT").onClick(() =>
-				this.document.body.setCssProps({
-					"--background-primary": defaultColor,
-				})
-			)
-		);
-
-		for (const color of COLORS) {
-			this.colorMenu.addItem((item) =>
-				item.setTitle(color.label).onClick(() =>
-					this.document.body.setCssProps({
-						"--background-primary": `rgb(var(${color.color}))`,
-					})
-				)
-			);
-		}
-
-		this.document.body.setCssProps({
-			"--background-primary": `rgb(var(${this.DEFAUL_COLOR}))`,
-		})
+	private initColorMenu() {
+		this.colorMenu = new ColorMenu(this.document.body);
+		this.setDefaultColor();
 	}
+
+	private setDefaultColor() {
+        this.document.body.setCssProps({
+			"--background-primary": getColorCSS(this.DEFAULT_COLOR),
+		});
+    }
 }

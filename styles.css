@@ -21,8 +21,47 @@
     --sticky-note-pink: 245, 218, 231;
 }
 
-.sticky-note-button  {
+.sticky-note-button {
     --icon-color: var(--color-base-100);
     --icon-color-hover: var(--color-base-100);
 }
     
+.color-menu {
+    row-gap: 4px;
+}
+
+.color-menu-item:hover {
+    font-weight: 500;
+}
+
+.sticky-note-text-red {
+    background-color: rgb(var(--sticky-note-red));
+}
+
+.sticky-note-text-orange {
+    background-color: rgb(var(--sticky-note-orange));
+}
+
+.sticky-note-text-yellow {
+    background-color: rgb(var(--sticky-note-yellow));
+}
+
+.sticky-note-text-green {
+    background-color: rgb(var(--sticky-note-green));
+}
+
+.sticky-note-text-cyan {
+    background-color: rgb(var(--sticky-note-cyan));
+}
+
+.sticky-note-text-blue {
+    background-color: rgb(var(--sticky-note-blue));
+}
+
+.sticky-note-text-purple {
+    background-color: rgb(var(--sticky-note-purple));
+}
+
+.sticky-note-text-pink {
+    background-color: rgb(var(--sticky-note-pink));
+}
