@@ -19,27 +19,23 @@ export default class StickyNotesPlugin extends Plugin {
 	async onload() {
 		LoggingService.disable();
 		LoggingService.info("Sticky Notes : plugin loading....");
-
-		this.settingsManager = new SettingService(this);
+		this.addSettings();
 		this.addStickyNoteRibbonAction();
-
-		this.addSettingTab(new StickyNotesSettingsTab(this.app, this));
-
-		this.addStickNoteCommand();
+		this.addStickyNoteCommand();
 		this.addStickyNoteMenuOptions();
 		this.addLeafChangeListner();
 	}
 
 	onunload() {
 		LoggingService.info("Stiky Notes : plugin UN-loading ....");
-		this.destroyAllStickyNotes();
+		// this.destroyAllStickyNotes(); //TODO: its an antipattern to detach leaves in the unload, more research is needed in order to know how to handle this.
 	}
 
 	private destroyAllStickyNotes() {
 		StickyNoteLeaf.leafsList.forEach(l => l.leaf.detach())
 	}
 
-	private addStickNoteCommand() {
+	private addStickyNoteCommand() {
 		this.addCommand({
 			id: "open-sticky-note-view",
 			name: "Open sticky note window",
@@ -86,6 +82,12 @@ export default class StickyNotesPlugin extends Plugin {
 		});
 	}
 
+	private async addSettings() {
+		this.settingsManager = new SettingService(this);
+		await this.settingsManager.initSettings();
+		this.addSettingTab(new StickyNotesSettingsTab(this.app, this, this.settingsManager));
+	}
+
 	// private addPopoutClosedListner() {
 	// 	const closeEvent = this.app.workspace.on('window-close', (win: WorkspaceWindow, window: Window) => {
 	// 		const noteId = win.doc.documentElement.getAttribute('note-id');
@@ -115,7 +117,7 @@ export default class StickyNotesPlugin extends Plugin {
 				width: 300,
 			},
 		});
-		const stickNoteLeaf = new StickyNoteLeaf(popoutLeaf, this);
+		const stickNoteLeaf = new StickyNoteLeaf(popoutLeaf, this.settingsManager);
 		await stickNoteLeaf.initStickyNote(file);
 	}
 }
