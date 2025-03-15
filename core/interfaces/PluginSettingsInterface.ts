@@ -1,8 +1,7 @@
 export interface IPluginSettings {
-    // defaultColor: c
-    // defaultSize: 300,
-    // enableResize: false,
-    // colors?
+	defaultSize: string;
+	dimensions: string;
+    defaultColor: string;
 }
 
 // - colors
@@ -12,4 +11,7 @@ export interface IPluginSettings {
 // - memorize sticky ntoes
 
 export const DEFAULT_SETTINGS: IPluginSettings = {
-}
+	defaultSize: "default",
+	dimensions: "300x300",
+	defaultColor: "yellow",
+};

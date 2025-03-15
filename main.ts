@@ -1,27 +1,38 @@
-import { LoggingService } from "core/services/LogginService";
-import { StickyNoteLeaf } from "core/views/StickyNoteLeaf";
 import {
 	Menu,
 	Plugin,
-	setTooltip,
 	TFile,
 	WorkspaceLeaf,
+	setTooltip,
 } from "obsidian";
 
+import { IPluginSettings } from "core/interfaces/PluginSettingsInterface";
+import { LoggingService } from "core/services/LogginService";
+import { SettingService } from "core/services/SettingService";
+import { StickyNoteLeaf } from "core/views/StickyNoteLeaf";
+import { StickyNotesSettingsTab } from "core/views/StickyNotesSettingsTab";
+
 export default class StickyNotesPlugin extends Plugin {
+	settingsManager: SettingService;
+	globalSettings: IPluginSettings;
 
 	async onload() {
 		LoggingService.disable();
-		LoggingService.info("plugin loading....");
+		LoggingService.info("Sticky Notes : plugin loading....");
 
+		this.settingsManager = new SettingService(this);
 		this.addStickyNoteRibbonAction();
+
+		this.addSettingTab(new StickyNotesSettingsTab(this.app, this));
+
 		this.addStickNoteCommand();
 		this.addStickyNoteMenuOptions();
 		this.addLeafChangeListner();
 	}
 
 	onunload() {
-		LoggingService.info("plugin UN-loading ....");
+		LoggingService.info("Stiky Notes : plugin UN-loading ....");
+		this.destroyAllStickyNotes();
 	}
 
 	private destroyAllStickyNotes() {
@@ -104,7 +115,7 @@ export default class StickyNotesPlugin extends Plugin {
 				width: 300,
 			},
 		});
-		const stickNoteLeaf = new StickyNoteLeaf(popoutLeaf);
+		const stickNoteLeaf = new StickyNoteLeaf(popoutLeaf, this);
 		await stickNoteLeaf.initStickyNote(file);
 	}
 }

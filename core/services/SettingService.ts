@@ -1,19 +1,24 @@
 import { DEFAULT_SETTINGS, IPluginSettings } from "core/interfaces/PluginSettingsInterface";
-import type { Plugin } from "obsidian";
+
+import type StickyNotesPlugin from "main";
 
 export class SettingService {
-    plugin: Plugin;
+    plugin: StickyNotesPlugin;
 	settings: IPluginSettings;
 
-    constructor(plugin: Plugin) {
+    constructor(plugin: StickyNotesPlugin) {
         this.plugin = plugin;
+		this.loadSettings();
     }
     
 	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.plugin.loadData());
+		this.settings = await Object.assign({}, DEFAULT_SETTINGS, await this.plugin.loadData());
+		this.plugin.globalSettings = this.settings;
 	}
 
-	async saveSettings() {
+	async saveSettings(updatedSettings: IPluginSettings) {
+		this.plugin.globalSettings = updatedSettings;
+		this.settings = updatedSettings;
 		await this.plugin.saveData(this.settings);
 	}
 }
