@@ -16,7 +16,9 @@ export class SettingService {
 		this.plugin.globalSettings = this.settings;
 	}
 
-	async saveSettings() {
+	async saveSettings(updatedSettings: IPluginSettings) {
+		this.plugin.globalSettings = updatedSettings;
+		this.settings = updatedSettings;
 		await this.plugin.saveData(this.settings);
 	}
 }
