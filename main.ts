@@ -21,7 +21,7 @@ export default class StickyNotesPlugin extends Plugin {
 		LoggingService.info("Sticky Notes : plugin loading....");
 
 		this.settingsManager = new SettingService(this);
-		await this.addStickyNoteRibbonAction();
+		this.addStickyNoteRibbonAction();
 
 		this.addSettingTab(new StickyNotesSettingsTab(this.app, this));
 
@@ -54,7 +54,7 @@ export default class StickyNotesPlugin extends Plugin {
 		});
 	}
 
-	private async addStickyNoteRibbonAction() {
+	private addStickyNoteRibbonAction() {
 		const stickyNoteRibbon = this.addRibbonIcon(
 			"sticky-note",
 			"Open sticky note",
