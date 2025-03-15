@@ -1,5 +1,3 @@
-import { LoggingService } from "core/services/LogginService";
-import { StickyNoteLeaf } from "core/views/StickyNoteLeaf";
 import {
 	Menu,
 	Plugin,
@@ -117,7 +115,7 @@ export default class StickyNotesPlugin extends Plugin {
 				width: 300,
 			},
 		});
-		const stickNoteLeaf = new StickyNoteLeaf(popoutLeaf);
+		const stickNoteLeaf = new StickyNoteLeaf(popoutLeaf, this);
 		await stickNoteLeaf.initStickyNote(file);
 	}
 }
