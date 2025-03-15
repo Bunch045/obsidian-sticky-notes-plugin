@@ -1,81 +1,95 @@
-import { App, Notice, PluginSettingTab, Setting } from "obsidian";
 import {
-	DEFAULT_SETTINGS,
-	IPluginSettings,
-} from "core/interfaces/PluginSettingsInterface";
-
-import { SettingService } from "core/services/SettingService";
+	App,
+	Notice,
+	PluginSettingTab,
+	Setting,
+	TextComponent,
+} from "obsidian";
 import type StickyNotesPlugin from "main";
-
-export enum defaultSize {
-	Default = "default",
-	Custom = "custom",
-	rememberLastDimension = "rememberLastDimension",
-}
+import { SizeOptions } from "core/enums/sizeOptionEnum";
+import { SettingService } from "core/services/SettingService";
 
 export class StickyNotesSettingsTab extends PluginSettingTab {
-	plugin: StickyNotesPlugin;
+	settingService: SettingService;
+	dimensionTextSetting: TextComponent;
 
-	constructor(app: App, plugin: StickyNotesPlugin) {
+	constructor(
+		app: App,
+		plugin: StickyNotesPlugin,
+		settingService: SettingService
+	) {
 		super(app, plugin);
-		this.plugin = plugin;
+		this.settingService = settingService;
 	}
 
-	// Display the settings in the settings tab
 	async display(): Promise<void> {
-		const { containerEl } = this;
-		containerEl.empty();
-		containerEl.addClass("StickyNotesSettingsTab");
+		this.containerEl.empty();
 
-		if (!this.plugin.globalSettings) {
-			containerEl.createEl("p", {
+		if (!this.settingService.settings) {
+			this.containerEl.createEl("p", {
 				text: "falied-to-load-settings",
 			});
 			return;
 		}
 
-		new Setting(containerEl)
+		this.addSizeSetting();
+	}
+
+	addSizeSetting() {
+		return new Setting(this.containerEl)
 			.setName("Default size")
-			.setDesc("Select what default size each new sticky notes window should take.")
+			.setDesc(
+				"Select what default size each new sticky note window should take."
+			)
 			.addDropdown((dropdown) =>
 				dropdown
-					.addOptions({
-						[defaultSize.Default]: "Default",
-						[defaultSize.rememberLastDimension]:
-							"Remember last size",
-						[defaultSize.Custom]: "Custom",
-					})
-					.setValue(this.plugin.globalSettings?.defaultSize)
-					.onChange(async (value) => {
-						this.plugin.globalSettings.defaultSize = value as defaultSize;
-						await this.plugin.settingsManager.saveSettings(this.plugin.globalSettings);
-						demensionsSetting.setDisabled(value !== defaultSize.Custom);
-					})
-			);
-
-		const demensionsSetting = new Setting(containerEl)
-			.setName("Custom dimensions")
-			.setDesc(
-				"Set the default dimensions for the sticky notes window. Use the format 'widthxheight'."
-			)
-			.addText((text) =>
-				text
-					.setPlaceholder("eg.: 300x300")
-					.setValue(
-						this.plugin.globalSettings.dimensions.toString() || ""
+					.addOptions(
+						Object.fromEntries(
+							Object.values(SizeOptions).map((value) => [
+								value,
+								value,
+							])
+						)
 					)
+					.setValue(this.settingService.settings.sizeOption)
 					.onChange(async (value) => {
+						this.settingService.updateSettings({
+							sizeOption: value as SizeOptions,
+						});
+						this.dimensionTextSetting?.setDisabled(
+							value !== SizeOptions.CUSTOM
+						);
+						if (value === SizeOptions.DEFAULT) {
+							this.settingService.updateWindowDimensions(
+								300,
+								300
+							);
+							this.dimensionTextSetting.setValue(
+								this.settingService.settings.dimensions
+							);
+						}
+					})
+			)
+			.addText((text) => {
+				this.dimensionTextSetting = text
+					.setPlaceholder("eg.: 300x300")
+					.setValue(this.settingService.settings.dimensions)
+					.onChange(async (value) => {
+						let newDimensions = "300x300";
 						if (value.trim() === "") {
-							this.plugin.globalSettings.dimensions = '300x300';
+							newDimensions = "300x300";
 						} else if (value.match(/^\d+x\d+$/)) {
-							this.plugin.globalSettings.dimensions = value;
+							newDimensions = value;
 						} else {
 							new Notice("Invalid number");
 							return;
 						}
-						await this.plugin.settingsManager.saveSettings(this.plugin.globalSettings);
+						await this.settingService.updateSettings({
+							dimensions: newDimensions,
+						});
 					})
-			)
-			.setDisabled(this.plugin.globalSettings.defaultSize !== defaultSize.Custom);
+					.setDisabled(this.settingService.settings.sizeOption !== SizeOptions.CUSTOM);
+				return this.dimensionTextSetting;
+			});
 	}
 }
