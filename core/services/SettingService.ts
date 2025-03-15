@@ -12,7 +12,8 @@ export class SettingService {
     }
     
 	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.plugin.loadData());
+		this.settings = await Object.assign({}, DEFAULT_SETTINGS, await this.plugin.loadData());
+		this.plugin.globalSettings = this.settings;
 	}
 
 	async saveSettings() {
