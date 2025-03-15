@@ -8,6 +8,7 @@ export class SettingService {
 
     constructor(plugin: StickyNotesPlugin) {
         this.plugin = plugin;
+		this.loadSettings();
     }
     
 	async loadSettings() {
