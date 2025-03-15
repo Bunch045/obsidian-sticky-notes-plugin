@@ -13,7 +13,7 @@ import { BrowserWindow } from "@electron/remote";
 import { ColorMenu } from "core/menus/colorMenu";
 import { LoggingService } from "core/services/LogginService";
 import type StickyNotesPlugin from "main";
-import { defaultSize } from "./SettingsTab";
+import { defaultSize } from "./StickyNotesSettingsTab";
 
 export class StickyNoteLeaf {
 	private static stickyNoteId = 0;

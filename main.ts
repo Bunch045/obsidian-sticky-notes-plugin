@@ -10,7 +10,7 @@ import { IPluginSettings } from "core/interfaces/PluginSettingsInterface";
 import { LoggingService } from "core/services/LogginService";
 import { SettingService } from "core/services/SettingService";
 import { StickyNoteLeaf } from "core/views/StickyNoteLeaf";
-import { StickyNotesSettingsTab } from "core/views/SettingsTab";
+import { StickyNotesSettingsTab } from "core/views/StickyNotesSettingsTab";
 
 export default class StickyNotesPlugin extends Plugin {
 	settingsManager: SettingService;
