@@ -3,18 +3,30 @@ import { StickyNoteLeaf } from "core/views/StickyNoteLeaf";
 import {
 	Menu,
 	Plugin,
-	setTooltip,
 	TFile,
 	WorkspaceLeaf,
+	setTooltip,
 } from "obsidian";
 
+import { IPluginSettings } from "core/interfaces/PluginSettingsInterface";
+import { LoggingService } from "core/services/LogginService";
+import { SettingService } from "core/services/SettingService";
+import { StickyNoteLeaf } from "core/views/StickyNoteLeaf";
+import { StickyNotesSettingsTab } from "core/views/SettingsTab";
+
 export default class StickyNotesPlugin extends Plugin {
+	settingsManager: SettingService;
+	globalSettings: IPluginSettings;
 
 	async onload() {
 		LoggingService.disable();
 		LoggingService.info("plugin loading....");
 
-		this.addStickyNoteRibbonAction();
+		this.settingsManager = new SettingService(this);
+		await this.addStickyNoteRibbonAction();
+
+		this.addSettingTab(new StickyNotesSettingsTab(this.app, this));
+
 		this.addStickNoteCommand();
 		this.addStickyNoteMenuOptions();
 		this.addLeafChangeListner();
