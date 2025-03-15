@@ -20,7 +20,7 @@ export default class StickyNotesPlugin extends Plugin {
 
 	async onload() {
 		LoggingService.disable();
-		LoggingService.info("plugin loading....");
+		LoggingService.info("Sticky Notes : plugin loading....");
 
 		this.settingsManager = new SettingService(this);
 		await this.addStickyNoteRibbonAction();
@@ -33,7 +33,8 @@ export default class StickyNotesPlugin extends Plugin {
 	}
 
 	onunload() {
-		LoggingService.info("plugin UN-loading ....");
+		LoggingService.info("Stiky Notes : plugin UN-loading ....");
+		this.destroyAllStickyNotes();
 	}
 
 	private destroyAllStickyNotes() {
@@ -55,7 +56,7 @@ export default class StickyNotesPlugin extends Plugin {
 		});
 	}
 
-	private addStickyNoteRibbonAction() {
+	private async addStickyNoteRibbonAction() {
 		const stickyNoteRibbon = this.addRibbonIcon(
 			"sticky-note",
 			"Open sticky note",
