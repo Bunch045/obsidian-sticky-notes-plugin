@@ -1,11 +1,12 @@
 import { DEFAULT_SETTINGS, IPluginSettings } from "core/interfaces/PluginSettingsInterface";
-import type { Plugin } from "obsidian";
+
+import type StickyNotesPlugin from "main";
 
 export class SettingService {
-    plugin: Plugin;
+    plugin: StickyNotesPlugin;
 	settings: IPluginSettings;
 
-    constructor(plugin: Plugin) {
+    constructor(plugin: StickyNotesPlugin) {
         this.plugin = plugin;
     }
     
