@@ -35,7 +35,6 @@ export class StickyNotesSettingsTab extends PluginSettingTab {
 		}
 
 		this.addSizeSetting();
-		this.addResizableSetting();
 	}
 
 	addSizeSetting() {
