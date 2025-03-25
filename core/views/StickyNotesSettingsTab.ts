@@ -4,6 +4,7 @@ import {
 	PluginSettingTab,
 	Setting,
 	TextComponent,
+	ToggleComponent,
 } from "obsidian";
 
 import { SettingService } from "core/services/SettingService";
@@ -13,7 +14,7 @@ import type StickyNotesPlugin from "main";
 export class StickyNotesSettingsTab extends PluginSettingTab {
 	settingService: SettingService;
 	dimensionTextSetting: TextComponent;
-	windowSizeSettingContainer: HTMLElement;
+	resizableSettingContainer: ToggleComponent;
 
 	constructor(
 		app: App,
@@ -35,13 +36,12 @@ export class StickyNotesSettingsTab extends PluginSettingTab {
 		}
 
 		this.addSizeSetting();
+
+		this.addResizableSetting();
 	}
 
 	addSizeSetting() {
-		this.windowSizeSettingContainer = this.containerEl.createDiv({
-			cls: "BgColorSettingContainer",
-		});
-		return new Setting(this.windowSizeSettingContainer)
+		return new Setting(this.containerEl)
 			.setName("Default size")
 			.setDesc(
 				"Select what default size each new sticky note window should take."
@@ -73,24 +73,14 @@ export class StickyNotesSettingsTab extends PluginSettingTab {
 								this.settingService.settings.dimensions
 							);
 						}
-
-						// TODO : This implementation is getting too complex, can be removed if feels unnecessary
-						const stickyNotesResizables = document.querySelectorAll(
-							".sticky-notes-resizable-setting"
-						);
-						// Show or hide the resizable setting
-						if (
-							value !== SizeOptions.REMEMBER_LAST &&
-							!stickyNotesResizables.length
-						) {
-							this.addResizableSetting();
-						} else if (value === SizeOptions.REMEMBER_LAST) {
-							this.containerEl
-								.querySelector(
-									".sticky-notes-resizable-setting"
-								)
-								?.remove();
-								this.settingService.settings.resizable = true;
+						if (value === SizeOptions.REMEMBER_LAST) {
+							this.settingService.updateSettings({
+								resizable: true,
+							});
+							this.resizableSettingContainer.setValue(true);
+							this.resizableSettingContainer.setDisabled(true);
+						} else {
+							this.resizableSettingContainer.setDisabled(false);
 						}
 					})
 			)
@@ -121,21 +111,22 @@ export class StickyNotesSettingsTab extends PluginSettingTab {
 	}
 
 	addResizableSetting() {
-		return new Setting(
-			this.windowSizeSettingContainer.createDiv(
-				"sticky-notes-resizable-setting"
-			)
-		)
+		return new Setting(this.containerEl)
 			.setName("Resizable Window")
 			.setDesc("Enable or disable window resizing for new sticky notes.")
-			.addToggle((toggle) =>
-				toggle
-					.setValue(this.settingService.settings.resizable)
-					.onChange(async (value) => {
-						await this.settingService.updateSettings({
-							resizable: value,
-						});
-					})
+			.addToggle(
+				(toggle) =>
+					(this.resizableSettingContainer = toggle
+						.setValue(this.settingService.settings.resizable || this.settingService.settings.sizeOption === SizeOptions.REMEMBER_LAST)
+						.onChange(async (value) => {
+							await this.settingService.updateSettings({
+								resizable: value,
+							});
+						})
+						.setDisabled(
+							this.settingService.settings.sizeOption ===
+								SizeOptions.REMEMBER_LAST
+						))
 			);
 	}
 }
