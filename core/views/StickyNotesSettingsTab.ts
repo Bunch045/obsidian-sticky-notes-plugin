@@ -4,14 +4,17 @@ import {
 	PluginSettingTab,
 	Setting,
 	TextComponent,
+	ToggleComponent,
 } from "obsidian";
-import type StickyNotesPlugin from "main";
-import { SizeOptions } from "core/enums/sizeOptionEnum";
+
 import { SettingService } from "core/services/SettingService";
+import { SizeOptions } from "core/enums/sizeOptionEnum";
+import type StickyNotesPlugin from "main";
 
 export class StickyNotesSettingsTab extends PluginSettingTab {
 	settingService: SettingService;
 	dimensionTextSetting: TextComponent;
+	resizableSettingContainer: ToggleComponent;
 
 	constructor(
 		app: App,
@@ -33,6 +36,8 @@ export class StickyNotesSettingsTab extends PluginSettingTab {
 		}
 
 		this.addSizeSetting();
+
+		this.addResizableSetting();
 	}
 
 	addSizeSetting() {
@@ -68,6 +73,15 @@ export class StickyNotesSettingsTab extends PluginSettingTab {
 								this.settingService.settings.dimensions
 							);
 						}
+						if (value === SizeOptions.REMEMBER_LAST) {
+							this.settingService.updateSettings({
+								resizable: true,
+							});
+							this.resizableSettingContainer.setValue(true);
+							this.resizableSettingContainer.setDisabled(true);
+						} else {
+							this.resizableSettingContainer.setDisabled(false);
+						}
 					})
 			)
 			.addText((text) => {
@@ -88,8 +102,31 @@ export class StickyNotesSettingsTab extends PluginSettingTab {
 							dimensions: newDimensions,
 						});
 					})
-					.setDisabled(this.settingService.settings.sizeOption !== SizeOptions.CUSTOM);
+					.setDisabled(
+						this.settingService.settings.sizeOption !==
+							SizeOptions.CUSTOM
+					);
 				return this.dimensionTextSetting;
 			});
+	}
+
+	addResizableSetting() {
+		return new Setting(this.containerEl)
+			.setName("Resizable Window")
+			.setDesc("Enable or disable window resizing for new sticky notes.")
+			.addToggle(
+				(toggle) =>
+					(this.resizableSettingContainer = toggle
+						.setValue(this.settingService.settings.resizable || this.settingService.settings.sizeOption === SizeOptions.REMEMBER_LAST)
+						.onChange(async (value) => {
+							await this.settingService.updateSettings({
+								resizable: value,
+							});
+						})
+						.setDisabled(
+							this.settingService.settings.sizeOption ===
+								SizeOptions.REMEMBER_LAST
+						))
+			);
 	}
 }
