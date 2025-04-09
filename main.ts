@@ -27,6 +27,8 @@ export default class StickyNotesPlugin extends Plugin {
 
 	settings: StickyNotesSettings;
 
+	private fromFileBrowser = false;
+
 	async onload() {
 		LoggingService.disable();
 		LoggingService.info("plugin loading....");
@@ -40,8 +42,26 @@ export default class StickyNotesPlugin extends Plugin {
 		await this.loadSettings();
 
 		this.registerEvent(
-			this.app.workspace.on("file-open", this.checkIfSticky.bind(this))
+			this.app.workspace.on("file-open", (file: TFile | null) => {
+				if(file && this.fromFileBrowser) {
+					this.checkIfSticky(file);
+					this.fromFileBrowser = false;
+				}
+			})
 		);
+
+		this.registerDomEvent(
+			document,
+			"click",
+			(evt: MouseEvent) => {
+			  const target = evt.target as HTMLElement;
+			  // File explorer items have a class like "nav-file-title"
+			  if (target.closest(".nav-file")) {
+				console.log("file browser clicked");
+				this.fromFileBrowser = true;
+			  }
+			}
+		  );
 	}
 
 	onunload() {
