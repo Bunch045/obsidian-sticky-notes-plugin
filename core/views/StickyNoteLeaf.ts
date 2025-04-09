@@ -25,9 +25,11 @@ export class StickyNoteLeaf {
 	document: Document;
 	mainWindow: Electron.BrowserWindow | undefined;
 	colorMenu: Menu;
+	dimension: number
 
-	constructor(leaf: WorkspaceLeaf) {
+	constructor(leaf: WorkspaceLeaf, dimension: number) {
 		this.leaf = leaf;
+		this.dimension = dimension;
 		this.view = leaf.view;
 		this.document = this.leaf.getContainer().win.activeDocument;
 		this.id = StickyNoteLeaf.stickyNoteId;
@@ -67,8 +69,8 @@ export class StickyNoteLeaf {
 			return;
 		}
 		this.mainWindow = mainWindow;
-		this.mainWindow.setSize(this.DEFAULT_DIMENSION, this.DEFAULT_DIMENSION);
-		this.mainWindow.setResizable(false);
+		this.mainWindow.setSize(this.dimension, this.dimension);
+		this.mainWindow.setResizable(true);
 		this.pinAction(true);
 	}
 

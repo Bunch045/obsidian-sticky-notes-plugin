@@ -1,13 +1,13 @@
 
 .theme-dark {
-    --sticky-note-red: 237, 84, 101;
-    --sticky-note-orange: 239, 139, 43;
-    --sticky-note-yellow: 230, 172, 20;
-    --sticky-note-green: 48, 187, 110;
-    --sticky-note-cyan: 43, 180, 201;
-    --sticky-note-blue: 48, 134, 229;
-    --sticky-note-purple: 143, 112, 242;
-    --sticky-note-pink: 220, 90, 154;
+    --sticky-note-red: 106, 26, 15;
+    --sticky-note-orange: 108, 52, 9;
+    --sticky-note-yellow: 69, 58, 2;
+    --sticky-note-green: 7, 40, 24;
+    --sticky-note-cyan: 28, 62, 89;
+    --sticky-note-blue: 11, 22, 37;
+    --sticky-note-purple: 26, 14, 45;
+    --sticky-note-pink: 56, 14, 45;
 }
 
 .theme-light {
