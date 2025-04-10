@@ -11,6 +11,7 @@ import {
 	Setting,
 	WorkspaceLeaf,
 	getFrontMatterInfo,
+	TAbstractFile,
 } from "obsidian";
 
 interface StickyNotesSettings {
@@ -28,6 +29,7 @@ export default class StickyNotesPlugin extends Plugin {
 	settings: StickyNotesSettings;
 
 	private fromFileBrowser = false;
+	private oldFile: TFile | null;
 
 	async onload() {
 		LoggingService.disable();
@@ -41,23 +43,24 @@ export default class StickyNotesPlugin extends Plugin {
 		this.addSettingTab(new StickySettingTab(this.app, this));
 		await this.loadSettings();
 
+		//Checks for files being opened from the file browser
 		this.registerEvent(
-			this.app.workspace.on("file-open", (file: TFile | null) => {
-				if(file && this.fromFileBrowser) {
-					this.checkIfSticky(file);
+			this.app.workspace.on("file-open", (file: TFile | null) => { //Triggers on active file change
+				if(file && this.fromFileBrowser == true) { //Triggers if file is not null and browser flag is active
+					console.log("file opened")
 					this.fromFileBrowser = false;
+					this.handleNoteOpen(file);
 				}
 			})
 		);
 
+		//Set a flag when files are clicked in the file browser
 		this.registerDomEvent(
 			document,
 			"click",
 			(evt: MouseEvent) => {
 			  const target = evt.target as HTMLElement;
-			  // File explorer items have a class like "nav-file-title"
 			  if (target.closest(".nav-file")) {
-				console.log("file browser clicked");
 				this.fromFileBrowser = true;
 			  }
 			}
@@ -68,31 +71,51 @@ export default class StickyNotesPlugin extends Plugin {
 		LoggingService.info("plugin UN-loading ....");
 	}
 
-	private async checkIfSticky(file: TFile | null = null) {
-		console.log("Checking if sticky note...");
+	private async handleNoteOpen(newFile: TFile | null) {
+		let abstractLastFile: TAbstractFile | null = null;
+		let lastFile: TFile;
+		let isSticky: boolean = false;
+		const currentLeaf = this.app.workspace.getLeaf(false);
+		await this.checkIfSticky(newFile) //Checks whether opened file is a sticky note
+			.then((value) => {
+				isSticky = value;
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+		if(isSticky) { //Triggers if opened file is a sticky note
+			abstractLastFile = this.app.vault.getAbstractFileByPath(this.app.workspace.getLastOpenFiles()[0]);
+			// ** Check whether note is already open
+			// *** if it is, just focus the open window
+			await this.openStickyNotePopup(newFile);
+		}
+		if(abstractLastFile instanceof TFile) {
+			console.log("Last file: " + abstractLastFile.name);
+			await currentLeaf.openFile(abstractLastFile);
+		}	
+	}
+
+
+	private async checkIfSticky(file: TFile | null = null): Promise<boolean> {
 		file = file ?? this.app.workspace.getActiveFile();
 		let content: string = "";
 		if(file == null) {
 			console.log("Sticky note check failed");
-			return;
+			return false;
 		}
-		console.log("Found file, checking frontmatter...");
 		await this.app.vault.cachedRead(file)
 			.then((value) => {
 				content = value;
-				console.log(getFrontMatterInfo(content).frontmatter);
 			})
 			.catch((error) => {
 				console.log("File read failed " + error);
-				return;
+				return false;
 			})
 		
 		if (getFrontMatterInfo(content).frontmatter.includes("stickynote: true")) {
-			console.log("Sticky note found! Opening");
-			this.openStickyNotePopup(file);
+			return true;
 		}
-		else
-		console.log("Not a sticky note");
+		else return false;
 	}
 
 	private destroyAllStickyNotes() {
