@@ -11,6 +11,7 @@ This is a modified version of the original plugin by NoPoint, primarily for my p
 ### Planning/hoping to implement if possible
 - Save the color of a sticky note in a frontmatter property and reopening the note in the saved color
 - Hide the properties section of a note in sticky note windows (toggleable in settings)
+    - On hold: implemented for reading view, but doesn't seem to work in Live Preview mode
 - Shrink margins of sticky note windows and adjust text size for greater information density (configurable)
 - Integrate with the Tray plugin to enable global hotkeys for sticky note creation
 

@@ -16,7 +16,7 @@ export class StickyNoteLeaf {
 	private static stickyNoteId = 0;
 	public static leafsList = new Set<StickyNoteLeaf>();
 
-	DEFAULT_DIMENSION = 300;
+	DEFAULT_DIMENSION = 350;
 	DEFAULT_COLOR = Colors.YELLOW;
 
 	id: number;
@@ -57,6 +57,7 @@ export class StickyNoteLeaf {
 		this.removeDefaultActionsMenu();
 		this.removeHeader();
 		this.addStickyNoteActions();
+		this.view.containerEl.setAttribute("data-type", "sticky-note")
 	}
 
 	private initMainWindow() {
@@ -68,6 +69,23 @@ export class StickyNoteLeaf {
 			);
 			return;
 		}
+		//Hide properties section on sticky note windows:
+		//Currently I can only figure out how to get this to work in reading mode unfortunately. It seems like it's basically baked into live preview.
+		const noPropertiesCSS = `
+		.workspace-leaf-content[data-type="sticky-note"]
+		.markdown-live-preview-view
+		.metadata-container{
+			display: none;
+		}
+		.workspace-leaf-content[data-type="sticky-note"]
+		.markdown-preview-view
+		.metadata-container{
+			display: none;
+		}
+		`;
+		const style = this.document.createElement("style");
+		style.textContent = noPropertiesCSS;
+		this.document.head.appendChild(style);
 		this.mainWindow = mainWindow;
 		this.mainWindow.setSize(this.dimension, this.dimension);
 		this.mainWindow.setResizable(true);

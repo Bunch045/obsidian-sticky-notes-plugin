@@ -21,7 +21,7 @@ interface StickyNotesSettings {
 
 const DEFAULT_SETTINGS: StickyNotesSettings = {
 	noteSize: 300,
-	newStickyFilePath: "/Sticky Notes"
+	newStickyFilePath: "Sticky Notes"
 }
 
 export default class StickyNotesPlugin extends Plugin {
