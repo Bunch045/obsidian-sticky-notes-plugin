@@ -69,12 +69,13 @@ export class StickyNoteLeaf {
 			);
 			return;
 		}
-		//Hide properties section on sticky note windows:
-		//Currently I can only figure out how to get this to work in reading mode unfortunately. It seems like it's basically baked into live preview.
+		//Hide properties section on sticky note windows
+		//Set header text to 18px to make more room for note body
 		const noPropertiesCSS = `
 		.workspace-leaf-content[data-type="sticky-note"]
-		.markdown-live-preview-view
 		.metadata-container{
+			position: absolute;
+			left: -9999px;
 			display: none;
 		}
 		.workspace-leaf-content[data-type="sticky-note"]
@@ -82,10 +83,29 @@ export class StickyNoteLeaf {
 		.metadata-container{
 			display: none;
 		}
+		.workspace-leaf-content[data-type="sticky-note"]
+		.inline-title {
+        	font-size: 18px;
+      	}
+		.workspace-leaf-content[data-type="sticky-note"]
+		.view-content
+		.markdown-source-view
+		.cm-editor
+		.cm-scroller {
+			padding: 0px;
+			font-size: 14.5px;
+		}
 		`;
 		const style = this.document.createElement("style");
 		style.textContent = noPropertiesCSS;
 		this.document.head.appendChild(style);
+
+		// //Removes padding around text area
+		// const viewContent = this.view.containerEl.querySelector(".view-content");
+		// if(viewContent) {
+		// 	(viewContent as HTMLElement).style.padding = "0px";
+		// }
+
 		this.mainWindow = mainWindow;
 		this.mainWindow.setSize(this.dimension, this.dimension);
 		this.mainWindow.setResizable(true);
