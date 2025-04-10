@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-sticky-notes-plugin",
-	"version": "0.7.9",
-	"description": "This is a sticky notes plugin for obsidian",
+	"name": "obsidian-sticky-notes-plugin-extended",
+	"version": "0.8.2",
+	"description": "This is a sticky notes plugin for obsidian, extended with additional features.",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
@@ -10,6 +10,7 @@
 	},
 	"keywords": [],
 	"author": "NoPoint",
+	"contributor": "Bunch",
 	"license": "SEE LICENSE IN LICENSE",
 	"devDependencies": {
 		"@electron/remote": "^2.1.2",

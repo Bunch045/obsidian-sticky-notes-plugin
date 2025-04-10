@@ -1,10 +1,11 @@
 {
-	"id": "sticky-notes",
-	"name": "Sticky Notes",
+	"id": "sticky-notes-extended",
+	"name": "Sticky Notes Extended",
 	"version": "0.8.2",
 	"minAppVersion": "0.15.0",
 	"description": "Create sticky notes popups.",
 	"author": "NoPoint",
+	"contributor": "Bunch",
 	"authorUrl": "https://github.com/Abdo-reda",
 	"isDesktopOnly": true
 }

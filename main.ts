@@ -47,7 +47,6 @@ export default class StickyNotesPlugin extends Plugin {
 		this.registerEvent(
 			this.app.workspace.on("file-open", (file: TFile | null) => { //Triggers on active file change
 				if(file && this.fromFileBrowser == true) { //Triggers if file is not null and browser flag is active
-					console.log("file opened")
 					this.fromFileBrowser = false;
 					this.handleNoteOpen(file);
 				}
@@ -90,7 +89,6 @@ export default class StickyNotesPlugin extends Plugin {
 			await this.openStickyNotePopup(newFile);
 		}
 		if(abstractLastFile instanceof TFile) {
-			console.log("Last file: " + abstractLastFile.name);
 			await currentLeaf.openFile(abstractLastFile);
 		}	
 	}
