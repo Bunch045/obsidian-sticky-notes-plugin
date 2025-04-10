@@ -7,12 +7,12 @@ This is a modified version of the original plugin by NoPoint, primarily for my p
 - A command that creates a new note and opens it as a sticky note in the same action
 - Resizable sticky note windows, as well as a settings option to change the default size
 - A frontmatter property designating a note as a sticky note, which the plugin will recognize such that reopening that note will do so in a sticky note window and return the main view to the previously-open note
+- Hide the properties section of a note in sticky note windows 
+- Shrink margins of sticky note windows and adjust text size for greater information density 
 
 ### Planning/hoping to implement if possible
 - Save the color of a sticky note in a frontmatter property and reopening the note in the saved color
-- Hide the properties section of a note in sticky note windows (toggleable in settings)
-    - On hold: implemented for reading view, but doesn't seem to work in Live Preview mode
-- Shrink margins of sticky note windows and adjust text size for greater information density (configurable)
+- Expand settings menu with configuration options for CSS formatting
 - Integrate with the Tray plugin to enable global hotkeys for sticky note creation
 
 # Original Description
