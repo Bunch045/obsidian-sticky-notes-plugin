@@ -9,6 +9,7 @@ This is a modified version of the original plugin by NoPoint, primarily for my p
 - A frontmatter property designating a note as a sticky note, which the plugin will recognize such that reopening that note will do so in a sticky note window and return the main view to the previously-open note
 - Hide the properties section of a note in sticky note windows 
 - Shrink margins of sticky note windows and adjust text size for greater information density 
+- More legible and visually pleasing dark mode colors
 
 ### Planning/hoping to implement if possible
 - Save the color of a sticky note in a frontmatter property and reopening the note in the saved color
